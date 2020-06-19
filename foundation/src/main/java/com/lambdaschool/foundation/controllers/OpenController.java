@@ -6,11 +6,7 @@ import com.lambdaschool.foundation.models.UserRoles;
 import com.lambdaschool.foundation.services.RoleService;
 import com.lambdaschool.foundation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +29,7 @@ import java.util.List;
  * Its most important function is to allow a person to create their own username
  */
 @RestController
-public class OpenController
-{
+public class OpenController {
     /**
      * A method in this controller adds a new user to the application so needs access to User Services to do this.
      */
@@ -64,8 +59,7 @@ public class OpenController
             @RequestBody
                     UserMinimum newminuser)
             throws
-            URISyntaxException
-    {
+            URISyntaxException {
         // Create the user
         User newuser = new User();
 
@@ -76,7 +70,7 @@ public class OpenController
         // add the default role of user
         List<UserRoles> newRoles = new ArrayList<>();
         newRoles.add(new UserRoles(newuser,
-                                   roleService.findByName("user")));
+                roleService.findByName("user")));
         newuser.setRoles(newRoles);
 
         newuser = userService.save(newuser);
@@ -101,7 +95,7 @@ public class OpenController
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setAccept(acceptableMediaTypes);
         headers.setBasicAuth(System.getenv("OAUTHCLIENTID"),
-                             System.getenv("OAUTHCLIENTSECRET"));
+                System.getenv("OAUTHCLIENTSECRET"));
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("grant_type",
@@ -114,15 +108,15 @@ public class OpenController
                 newminuser.getPassword());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map,
-                                                                             headers);
+                headers);
 
         String theToken = restTemplate.postForObject(requestURI,
-                                                     request,
-                                                     String.class);
+                request,
+                String.class);
 
         return new ResponseEntity<>(theToken,
-                                    responseHeaders,
-                                    HttpStatus.CREATED);
+                responseHeaders,
+                HttpStatus.CREATED);
     }
 
     /**
@@ -130,8 +124,7 @@ public class OpenController
      */
     @ApiIgnore
     @GetMapping("favicon.ico")
-    public void returnNoFavicon()
-    {
+    public void returnNoFavicon() {
 
     }
 

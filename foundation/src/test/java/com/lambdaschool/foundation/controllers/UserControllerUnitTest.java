@@ -42,8 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-public class UserControllerUnitTest
-{
+public class UserControllerUnitTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -56,8 +55,7 @@ public class UserControllerUnitTest
 
     @Before
     public void setUp() throws
-            Exception
-    {
+            Exception {
         userList = new ArrayList<>();
 
         Role r1 = new Role("admin");
@@ -143,8 +141,7 @@ public class UserControllerUnitTest
         userList.add(u5);
 
         System.out.println("\n*** Seed Data ***");
-        for (User u : userList)
-        {
+        for (User u : userList) {
             System.out.println(u);
         }
         System.out.println("*** Seed Data ***\n");
@@ -158,14 +155,12 @@ public class UserControllerUnitTest
 
     @After
     public void tearDown() throws
-            Exception
-    {
+            Exception {
     }
 
     @Test
     public void listAllUsers() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/users";
 
         Mockito.when(userService.findAll())
@@ -191,8 +186,7 @@ public class UserControllerUnitTest
 
     @Test
     public void getUserById() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/user/12";
 
         Mockito.when(userService.findUserById(12))
@@ -216,8 +210,7 @@ public class UserControllerUnitTest
 
     @Test
     public void getUserByIdNotFound() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/user/77";
 
         Mockito.when(userService.findUserById(77))
@@ -240,8 +233,7 @@ public class UserControllerUnitTest
 
     @Test
     public void getUserByName() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/user/name/testing";
 
         Mockito.when(userService.findByName("testing"))
@@ -265,8 +257,7 @@ public class UserControllerUnitTest
 
     @Test
     public void getCurrentUserName() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/getusername";
 
         RequestBuilder rb = MockMvcRequestBuilders.get(apiUrl)
@@ -286,8 +277,7 @@ public class UserControllerUnitTest
 
     @Test
     public void getUserInfo() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/getuserinfo";
 
         Mockito.when(userService.findByName(anyString()))
@@ -311,8 +301,7 @@ public class UserControllerUnitTest
 
     @Test
     public void addNewUser() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/user";
 
         // build a user
@@ -324,7 +313,6 @@ public class UserControllerUnitTest
         u1.setPassword("ILuvM4th!");
         u1.setPrimaryemail("tiger@home.local");
         u1.setRoles(thisRole);
-        ;
         u1.setUseremails(thisEmail);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -345,8 +333,7 @@ public class UserControllerUnitTest
 
     @Test
     public void updateUser() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/user/{userid}";
 
         // build a user
@@ -374,8 +361,7 @@ public class UserControllerUnitTest
 
     @Test
     public void deleteUserById() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/user/{userid}";
 
         RequestBuilder rb = MockMvcRequestBuilders.delete(apiUrl, "3")
@@ -388,8 +374,7 @@ public class UserControllerUnitTest
 
     @Test
     public void deleteUserRoleByIds() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/user/{userid}/role/{roleid}";
 
         RequestBuilder rb = MockMvcRequestBuilders.delete(apiUrl, 3, 2);
@@ -403,8 +388,7 @@ public class UserControllerUnitTest
     // userService.addUserRole(userid, roleid);
     @Test
     public void postUserRoleByIds() throws
-            Exception
-    {
+            Exception {
         String apiUrl = "/users/user/{userid}/role/{roleid}";
 
         RequestBuilder rb = MockMvcRequestBuilders.post(apiUrl, 3, 2);

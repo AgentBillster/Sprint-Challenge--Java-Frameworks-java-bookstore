@@ -18,8 +18,7 @@ import java.util.List;
 @Transactional
 @Service(value = "useremailService")
 public class UseremailServiceImpl
-        implements UseremailService
-{
+        implements UseremailService {
     /**
      * Connects this service to the Useremail model
      */
@@ -36,8 +35,7 @@ public class UseremailServiceImpl
     private HelperFunctions helper;
 
     @Override
-    public List<Useremail> findAll()
-    {
+    public List<Useremail> findAll() {
         List<Useremail> list = new ArrayList<>();
         /*
          * findAll returns an iterator set.
@@ -50,28 +48,23 @@ public class UseremailServiceImpl
     }
 
     @Override
-    public Useremail findUseremailById(long id)
-    {
+    public Useremail findUseremailById(long id) {
         return useremailrepos.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Useremail with id " + id + " Not Found!"));
     }
 
     @Transactional
     @Override
-    public void delete(long id)
-    {
+    public void delete(long id) {
         if (useremailrepos.findById(id)
-                .isPresent())
-        {
+                .isPresent()) {
             if (helper.isAuthorizedToMakeChange(useremailrepos.findById(id)
-                                                        .get()
-                                                        .getUser()
-                                                        .getUsername()))
-            {
+                    .get()
+                    .getUser()
+                    .getUsername())) {
                 useremailrepos.deleteById(id);
             }
-        } else
-        {
+        } else {
             throw new ResourceNotFoundException("Useremail with id " + id + " Not Found!");
         }
     }
@@ -80,27 +73,22 @@ public class UseremailServiceImpl
     @Override
     public Useremail update(
             long useremailid,
-            String emailaddress)
-    {
+            String emailaddress) {
         if (useremailrepos.findById(useremailid)
-                .isPresent())
-        {
+                .isPresent()) {
             if (helper.isAuthorizedToMakeChange(useremailrepos.findById(useremailid)
-                                                        .get()
-                                                        .getUser()
-                                                        .getUsername()))
-            {
+                    .get()
+                    .getUser()
+                    .getUsername())) {
                 Useremail useremail = findUseremailById(useremailid);
                 useremail.setUseremail(emailaddress.toLowerCase());
                 return useremailrepos.save(useremail);
-            } else
-            {
+            } else {
                 // note we should never get to this line but is needed for the compiler
                 // to recognize that this exception can be thrown
                 throw new ResourceNotFoundException("This user is not authorized to make change");
             }
-        } else
-        {
+        } else {
             throw new ResourceNotFoundException("Useremail with id " + useremailid + " Not Found!");
         }
     }
@@ -109,17 +97,14 @@ public class UseremailServiceImpl
     @Override
     public Useremail save(
             long userid,
-            String emailaddress)
-    {
+            String emailaddress) {
         User currentUser = userService.findUserById(userid);
 
-        if (helper.isAuthorizedToMakeChange(currentUser.getUsername()))
-        {
+        if (helper.isAuthorizedToMakeChange(currentUser.getUsername())) {
             Useremail newUserEmail = new Useremail(currentUser,
-                                                   emailaddress);
+                    emailaddress);
             return useremailrepos.save(newUserEmail);
-        } else
-        {
+        } else {
             // note we should never get to this line but is needed for the compiler
             // to recognize that this exception can be thrown
             throw new ResourceNotFoundException("This user is not authorized to make change");
@@ -127,8 +112,7 @@ public class UseremailServiceImpl
     }
 
     @Override
-    public List<Useremail> findByUserName(String username)
-    {
+    public List<Useremail> findByUserName(String username) {
         return useremailrepos.findAllByUser_Username(username.toLowerCase());
     }
 }

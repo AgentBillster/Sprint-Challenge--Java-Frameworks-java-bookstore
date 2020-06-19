@@ -8,14 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,8 +23,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User
-        extends Auditable
-{
+        extends Auditable {
     /**
      * The primary key (long) of the users table.
      */
@@ -109,8 +101,7 @@ public class User
     /**
      * Default constructor used primarily by the JPA.
      */
-    public User()
-    {
+    public User() {
     }
 
     /**
@@ -127,13 +118,11 @@ public class User
             String username,
             String password,
             String primaryemail,
-            List<UserRoles> userRoles)
-    {
+            List<UserRoles> userRoles) {
         setUsername(username);
         setPassword(password);
         setPrimaryemail(primaryemail);
-        for (UserRoles ur : userRoles)
-        {
+        for (UserRoles ur : userRoles) {
             ur.setUser(this);
         }
         this.roles = userRoles;
@@ -144,8 +133,7 @@ public class User
      *
      * @return the userid (long) of the user
      */
-    public long getUserid()
-    {
+    public long getUserid() {
         return userid;
     }
 
@@ -154,8 +142,7 @@ public class User
      *
      * @param userid the new userid (long) of the user
      */
-    public void setUserid(long userid)
-    {
+    public void setUserid(long userid) {
         this.userid = userid;
     }
 
@@ -164,13 +151,11 @@ public class User
      *
      * @return the username (String) lowercase
      */
-    public String getUsername()
-    {
+    public String getUsername() {
         if (username == null) // this is possible when updating a user
         {
             return null;
-        } else
-        {
+        } else {
             return username.toLowerCase();
         }
     }
@@ -180,8 +165,7 @@ public class User
      *
      * @param username the new username (String) converted to lowercase
      */
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username.toLowerCase();
     }
 
@@ -190,13 +174,11 @@ public class User
      *
      * @return the primary email (String) for the user converted to lowercase
      */
-    public String getPrimaryemail()
-    {
+    public String getPrimaryemail() {
         if (primaryemail == null) // this is possible when updating a user
         {
             return null;
-        } else
-        {
+        } else {
             return primaryemail.toLowerCase();
         }
     }
@@ -206,8 +188,7 @@ public class User
      *
      * @param primaryemail the new primary email (String) for the user converted to lowercase
      */
-    public void setPrimaryemail(String primaryemail)
-    {
+    public void setPrimaryemail(String primaryemail) {
         this.primaryemail = primaryemail.toLowerCase();
     }
 
@@ -216,8 +197,7 @@ public class User
      *
      * @return the password (String) of the user
      */
-    public String getPassword()
-    {
+    public String getPassword() {
         return password;
     }
 
@@ -226,16 +206,14 @@ public class User
      *
      * @param password the new password (String) for the user. Comes in encrypted and stays that way
      */
-    public void setPasswordNoEncrypt(String password)
-    {
+    public void setPasswordNoEncrypt(String password) {
         this.password = password;
     }
 
     /**
      * @param password the new password (String) for this user. Comes in plain text and goes out encrypted
      */
-    public void setPassword(String password)
-    {
+    public void setPassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.password = passwordEncoder.encode(password);
     }
@@ -245,8 +223,7 @@ public class User
      *
      * @return the list of useremails (List(Useremail)) for this user
      */
-    public List<Useremail> getUseremails()
-    {
+    public List<Useremail> getUseremails() {
         return useremails;
     }
 
@@ -255,8 +232,7 @@ public class User
      *
      * @param useremails the new list of useremails (List(Useremail)) for this user
      */
-    public void setUseremails(List<Useremail> useremails)
-    {
+    public void setUseremails(List<Useremail> useremails) {
         this.useremails = useremails;
     }
 
@@ -265,8 +241,7 @@ public class User
      *
      * @return A list of user role combinations associated with this user
      */
-    public List<UserRoles> getRoles()
-    {
+    public List<UserRoles> getRoles() {
         return roles;
     }
 
@@ -275,8 +250,7 @@ public class User
      *
      * @param roles Change the list of user role combinations associated with this user to this one
      */
-    public void setRoles(List<UserRoles> roles)
-    {
+    public void setRoles(List<UserRoles> roles) {
         this.roles = roles;
     }
 
@@ -285,10 +259,9 @@ public class User
      *
      * @param role the new role (Role) to add
      */
-    public void addRole(Role role)
-    {
+    public void addRole(Role role) {
         roles.add(new UserRoles(this,
-                                role));
+                role));
     }
 
     /**
@@ -298,12 +271,10 @@ public class User
      * @return The list of authorities, roles, this user object has
      */
     @JsonIgnore
-    public List<SimpleGrantedAuthority> getAuthority()
-    {
+    public List<SimpleGrantedAuthority> getAuthority() {
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
 
-        for (UserRoles r : this.roles)
-        {
+        for (UserRoles r : this.roles) {
             String myRole = "ROLE_" + r.getRole()
                     .getName()
                     .toUpperCase();

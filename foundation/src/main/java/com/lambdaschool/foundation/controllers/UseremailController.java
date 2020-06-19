@@ -7,13 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -25,8 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/useremails")
-public class UseremailController
-{
+public class UseremailController {
     /**
      * Using the Useremail service to process user, email combinations data
      */
@@ -42,11 +35,10 @@ public class UseremailController
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/useremails",
             produces = {"application/json"})
-    public ResponseEntity<?> listAllUseremails()
-    {
+    public ResponseEntity<?> listAllUseremails() {
         List<Useremail> allUserEmails = useremailService.findAll();
         return new ResponseEntity<>(allUserEmails,
-                                    HttpStatus.OK);
+                HttpStatus.OK);
     }
 
     /**
@@ -61,11 +53,10 @@ public class UseremailController
             produces = {"application/json"})
     public ResponseEntity<?> getUserEmailById(
             @PathVariable
-                    Long useremailId)
-    {
+                    Long useremailId) {
         Useremail ue = useremailService.findUseremailById(useremailId);
         return new ResponseEntity<>(ue,
-                                    HttpStatus.OK);
+                HttpStatus.OK);
     }
 
     /**
@@ -78,8 +69,7 @@ public class UseremailController
     @DeleteMapping(value = "/useremail/{useremailid}")
     public ResponseEntity<?> deleteUserEmailById(
             @PathVariable
-                    long useremailid)
-    {
+                    long useremailid) {
         useremailService.delete(useremailid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -97,10 +87,9 @@ public class UseremailController
             @PathVariable
                     long useremailid,
             @PathVariable
-                    String emailaddress)
-    {
+                    String emailaddress) {
         useremailService.update(useremailid,
-                                emailaddress);
+                emailaddress);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -120,10 +109,9 @@ public class UseremailController
             @PathVariable
                     String emailaddress)
             throws
-            URISyntaxException
-    {
+            URISyntaxException {
         Useremail newUserEmail = useremailService.save(userid,
-                                                       emailaddress);
+                emailaddress);
 
         // set the location header for the newly created resource
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -134,8 +122,8 @@ public class UseremailController
         responseHeaders.setLocation(newUserEmailURI);
 
         return new ResponseEntity<>(null,
-                                    responseHeaders,
-                                    HttpStatus.CREATED);
+                responseHeaders,
+                HttpStatus.CREATED);
     }
 
     /**
@@ -149,10 +137,9 @@ public class UseremailController
             produces = {"application/json"})
     public ResponseEntity<?> findUseremailByUserName(
             @PathVariable
-                    String userName)
-    {
+                    String userName) {
         List<Useremail> theUseremails = useremailService.findByUserName(userName);
         return new ResponseEntity<>(theUseremails,
-                                    HttpStatus.OK);
+                HttpStatus.OK);
     }
 }

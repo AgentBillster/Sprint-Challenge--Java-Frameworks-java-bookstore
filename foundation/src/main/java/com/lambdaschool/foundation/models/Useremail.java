@@ -2,14 +2,7 @@ package com.lambdaschool.foundation.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
@@ -21,8 +14,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "useremails")
 public class Useremail
-        extends Auditable
-{
+        extends Auditable {
     /**
      * The primary key (long) of the useremails table
      */
@@ -57,8 +49,7 @@ public class Useremail
     /**
      * The default controller is required by JPA
      */
-    public Useremail()
-    {
+    public Useremail() {
     }
 
     /**
@@ -69,8 +60,7 @@ public class Useremail
      */
     public Useremail(
             User user,
-            String useremail)
-    {
+            String useremail) {
         this.useremail = useremail;
         this.user = user;
     }
@@ -80,8 +70,7 @@ public class Useremail
      *
      * @return the primary key (long) of this useremail object
      */
-    public long getUseremailid()
-    {
+    public long getUseremailid() {
         return useremailid;
     }
 
@@ -90,8 +79,7 @@ public class Useremail
      *
      * @param useremailid the new primary key (long) of this useremail object
      */
-    public void setUseremailid(long useremailid)
-    {
+    public void setUseremailid(long useremailid) {
         this.useremailid = useremailid;
     }
 
@@ -100,13 +88,11 @@ public class Useremail
      *
      * @return the email (String) associated with this useremail object in lowercase
      */
-    public String getUseremail()
-    {
+    public String getUseremail() {
         if (useremail == null) // this is possible when updating a user
         {
             return null;
-        } else
-        {
+        } else {
             return useremail.toLowerCase();
         }
     }
@@ -116,8 +102,7 @@ public class Useremail
      *
      * @param useremail the email (String) to replace the one currently assigned to this useremail object, in lowercase
      */
-    public void setUseremail(String useremail)
-    {
+    public void setUseremail(String useremail) {
         this.useremail = useremail.toLowerCase();
     }
 
@@ -127,8 +112,7 @@ public class Useremail
      *
      * @return the user object associated with this useremail.
      */
-    public User getUser()
-    {
+    public User getUser() {
         return user;
     }
 
@@ -137,8 +121,7 @@ public class Useremail
      *
      * @param user the user object to replace the one currently assigned to this useremail object
      */
-    public void setUser(User user)
-    {
+    public void setUser(User user) {
         this.user = user;
     }
 }
